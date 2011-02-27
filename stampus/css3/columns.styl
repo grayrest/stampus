@@ -1,0 +1,35 @@
+@import "shared"
+
+// Column support is imlemented uniformly across browsers thus far. Convenience mixin.
+$exp-column(prop, val)
+  experimental(prop, val,
+    'moz', 'webkit', 'o', !'ms', !'khtml', 'official'
+  )
+
+// Specify the number of columns
+column-count()
+  $exp-column(column-count, arguments)
+
+// Specify the gap width between columns e.g. `20px`
+column-gap()
+  $exp-column(column-gap, arguments)
+
+// Specify the column width e.g. `100px`
+column-width()
+  $exp-column(column-width, arguments)
+
+// Shorthand rule for column-rule: width, style, color
+column-rule()
+  $exp-column(column-rule, arguments)
+
+// Specify the width of the rule between columens e.g. `1px`
+column-rule-width()
+  $exp-column(column-rule-width, arguments)
+
+// Specify the style of the rule between columens e.g. `dotted`
+column-rule-style()
+  $exp-column(column-rule-style, arguments)
+
+// Specify the color of the rule between columens e.g. `red`
+column-rule-color()
+  $exp-column(column-rule-color, arguments)

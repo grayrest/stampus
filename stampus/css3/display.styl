@@ -1,0 +1,20 @@
+@import "shared"
+
+//collection of mixins for working on display
+display(dispval)
+  if dispval == box
+    if $display-box is defined
+      $display-box(dispval)
+    else
+      // XXX using \" in string causes infinite loop during parsing
+      warn("'display: box' set but not mixed in, import `css3/box` for vendor prefixes.")
+      display: dispval
+  else if $legacy-support-for-ie && dispval == inline-block
+    &
+      @css {*display: inline;}
+      zoom: 1 //XXX remove this. if there isn't a second rule here, @css doesn't render
+    display: inline-block;
+    vertical-align: middle;
+    @css {*vertical-align: auto}
+  else
+    display: dispval

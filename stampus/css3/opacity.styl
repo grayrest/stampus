@@ -1,0 +1,12 @@
+@import "shared"
+
+// Provides cross-browser CSS opacity. Takes a number between 0 (transparent)
+// and 1 (opaque) as the argument, e.g. 0.5 for 50% opacity.
+opacity(val)
+  ie-val = round(val * 100)
+  if $legacy-support-for-ie8
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" + ie-val + ")";
+  if $legacy-support-for-ie6 || $legacy-support-for-ie7
+    filter: unquote("progid:DXImageTransform.Microsoft.Alpha(Opacity=" + ie-val + ")");
+  opacity: val
+  //XXX Output ordering different from input ordering

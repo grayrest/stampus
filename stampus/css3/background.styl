@@ -1,0 +1,65 @@
+@import "shared"
+
+$default-background-clip ?= padding-box
+$default-background-origin ?= content-box
+$default-background-size ?= 100% auto
+
+// Clip the background (image and color) at the edge of the padding or border.
+// Modern browsers support this. The mixin provides fallback support for the
+// older syntax supported by mozilla (FF 1.0-3.6) and webkit
+//
+// * Possible values:
+//   * padding-box
+//   * border-box
+//   * text
+//
+// * browser defaults to `padding-box`
+// * mixin defaults to `padding-box`
+
+background-clip(box...)
+  // Older versions of webkit and mozilla use the deprecated short [border | padding]
+  dep0 = box[0] || $default-background-origin
+  dep1 = box[1]
+  dep0 = padding if dep0 == padding-box
+  dep0 = border  if dep0 == border-box
+  dep1 = padding if dep1 == padding-box
+  dep1 = border  if dep1 == border-box
+  experimental(background-clip, join(', ', dep0, dep1),
+    'moz', 'webkit', !'o', !'ms', !'khtml', !'official'
+  )
+  background-clip: length(box) ? arguments : $default-background-clip
+
+// Position the background off the edge of the padding, border or content
+//
+// * Possible values:
+//   * `padding-box`
+//   * `border-box`
+//   * `content-box`
+// * browser defaults to `padding-box`
+// * mixin defaults to `content-box`
+
+background-origin(box...)
+  // Older versions of webkit and mozilla use the deprecated short [border | padding | content]
+  dep0 = box[0] || $default-background-origin
+  dep1 = box[1]
+  dep0 = padding if dep0 == padding-box
+  dep0 = border  if dep0 == border-box
+  dep0 = content if dep0 == content-box
+  dep1 = padding if dep1 == padding-box
+  dep1 = border  if dep1 == border-box
+  dep1 = content if dep1 == content-box
+  experimental(background-origin, join(', ', dep0, dep1),
+    'moz', 'webkit', !'o', !'ms', !'khtml', !'official'
+  )
+  background-origin: length(box) ? arguments : $default-background-origin
+
+// Set the size of background images using px, width and height, or percentages.
+// Currently supported in: Opera, Gecko, Webkit.
+//
+// * percentages are relative to the background-origin
+// * mixin defaults to: 100% auto
+
+background-size()
+  experimental(background-size, arguments,
+    'moz', 'webkit', 'o', !'ms', !'khtml', 'official'
+  )

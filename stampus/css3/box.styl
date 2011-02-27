@@ -1,0 +1,67 @@
+@import "shared"
+
+// Box sizing is imlemented uniformly across browsers thus far. Convenience mixin.
+$exp-box(prop, val)
+  experimental(prop, val,
+    'moz', 'webkit', !'o', 'ms', !'khtml', 'official'
+  )
+
+// Inserts the correct set of vendor prefixed values when display: box is set
+$display-box(val)
+    experimental-value(display, val,
+      'moz', 'webkit', !'o', !'ms', !'khtml', 'official'
+    )
+
+// Change the box model for Mozilla, Webkit, IE8 and the future
+//
+// * Possible values:
+//   * content-box
+//   * border-box
+
+box-sizing()
+  experimental(box-sizing, arguments,
+    'moz', 'webkit', !'o', 'ms', !'khtml', 'official'
+  )
+
+$default-box-orient ?= horizontal
+$default-box-align ?= horizontal
+$default-box-flex ?= 0
+$default-box-flex-group ?= 1
+$default-box-ordinal-group ?= 1
+$default-box-direction ?= normal
+$default-box-lines ?= single
+$default-box-pack ?= start
+
+// Box orientation [ horizontal | vertical | inline-axis | block-axis | inherit ]
+box-orient(orient = $default-box-orient)
+  $exp-box(box-orient, orient)
+
+// Box align [ start | end | center | baseline | stretch ]
+box-align(alignment = $default-box-align)
+  $exp-box(box-align, alignment)
+
+// mixin which takes an int argument for box flex. Apply this to the children inside the box.
+//
+// For example: "div.display-box > div.child-box" would get the box flex mixin.
+box-flex(flex = $default-box-flex)
+  $exp-box(box-flex, flex)
+
+// mixin which takes an int argument for box flex grouping
+box-flex-group(group = $default-box-flex-group)
+  $exp-box(box-flex-group, group)
+
+// mixin which takes an int argument for ordinal grouping and reordering
+box-ordinal-group(group = $default-box-ordinal-group)
+  $exp-box(box-ordinal-group, group)
+
+// mixin for box-direction [ normal | reverse | inherit ]
+box-direction(direction = $default-box-direction)
+  $exp-box(box-direction, direction)
+
+// mixin for box lines [ single | multiple ]
+box-lines(lines = $default-box-lines)
+  $exp-box(box-lines, lines)
+
+// mixin for box pack [ start | end | center | justify ]
+box-pack(pack = $default-box-pack)
+  $exp-box(box-pack, pack)

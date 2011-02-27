@@ -1,0 +1,66 @@
+@import "shared"
+
+// The default color for box shadows
+$default-box-shadow-color ?= #333333
+
+// The default horizontal offset. Positive is to the right.
+$default-box-shadow-h-offset ?= 0px
+
+// The default vertical offset. Positive is down.
+$default-box-shadow-v-offset ?= 0px
+
+// The default blur length.
+$default-box-shadow-blur ?= 5px
+
+// The default spread length.
+$default-box-shadow-spread ?= false
+
+// The default shadow inset?= inset or false (for standard shadow).
+$default-box-shadow-inset ?= false
+
+$box-shadow(inset = $default-box-shadow-inset,
+            hoff = $default-box-shadow-h-offset,
+            voff = $default-box-shadow-v-offset,
+            blur = $default-box-shadow-blur,
+            spread = $default-box-shadow-spread,
+            color = $default-box-shadow-color
+) {
+  value = join(' ', inset, hoff, voff, blur, spread, color)
+  // XXX IE filter box-shadow is largely compat
+  experimental(box-shadow, value,
+      'moz', 'webkit', !'o', !'ms', !'khtml', 'official'
+  )
+}
+
+// Provides cross-browser for Webkit, Gecko, and CSS3 box shadows when one or more box shadows are needed.
+// XXX this only supports a single shadow, need a better way of parsing args (probably in stylus itself)
+box-shadow(args...)
+  if args[0] == none
+    experimental(box-shadow, none,
+        'moz', 'webkit', !'o', !'ms', !'khtml', 'official'
+    )
+  else if args[0] == default
+    $box-shadow()
+  else
+    // optional STARTING params AND switching depending on item type!?!
+    $inset = $default-box-shadow-inset
+    blur = false
+    spread = false
+    i = 0
+    if args[i] == inset
+      $inset = 'inset'
+      i += 1
+    // XXX defining an item in a non-taken branch and referencing it later silently crashes
+    hoff = args[i] || $default-box-shadow-h-offset
+    i += 1
+    voff = args[i] || $default-box-shadow-v-offset
+    i += 1
+    unless typeof(args[i]) == 'color'
+      blur = args[i]
+      i += 1
+    unless typeof(args[i]) == 'color'
+      spread = args[i]
+      i += 1
+    color = args[i] || $default-box-shadow-color
+    // Params are parsed :/
+    $box-shadow($inset, hoff, voff, blur, spread, color)

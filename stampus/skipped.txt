@@ -1,0 +1,8 @@
+font face -- do want to capture best practices, maybe in main @font-face?
+gradient -- value function needs to split property into n identical except prefix
+images -- seems mostly general utility
+transform -- TODO
+
+inline-block in display
+border-image in border
+text-shadow seems unnecessary

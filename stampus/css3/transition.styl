@@ -1,0 +1,50 @@
+@import "shared"
+
+// CSS Transition
+//
+// Works In:
+//   * Webkit (for a while)
+//   * FF4
+//   * Future: Opera (?)
+
+$default-transition-property ?= all
+$default-transition-duration ?= 1s
+$default-transition-timing-function ?= false
+$default-transition-delay    ?= false
+
+$exp-transition(prop, val)
+  experimental(prop, val,
+    'moz', 'webkit', 'o', !'ms', !'khtml', 'official'
+  )
+
+// What properites to transition
+transition-property()
+  if length(arguments) && arguments[0] != default
+    $exp-transition(transition-property, arguments)
+  else
+    $exp-transition(transition-property, $default-transition-property)
+
+// Transition duration
+transition-duration()
+  if length(arguments) && arguments[0] != default
+    $exp-transition(transition-duration, arguments)
+  else
+    $exp-transition(transition-duration, $default-transition-duration)
+
+// One or more timing functions
+//
+// * [ ease | linear | ease-in | ease-out | ease-in-out | cubic-bezier(x1, y1, x2, y2)]
+transition-timing-function()
+  if length(arguments) && arguments[0] != default
+    $exp-transition(transition-timing-function, arguments)
+  else
+    $exp-transition(transition-timing-function, $default-transition-timing-function)
+
+// Transition delay
+transition-delay()
+  if length(arguments) && arguments[0] != default
+    $exp-transition(transition-delay, arguments)
+  else
+    $exp-transition(transition-delay, $default-transition-delay)
+
+// XXX transition shorthand not implemented

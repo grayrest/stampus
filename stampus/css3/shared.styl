@@ -1,0 +1,51 @@
+@import "stampus/support"
+
+join(delim, strings...)
+  buf = ''
+  for s, i in strings
+    if !(typeof(s) == 'null' || s == false) //XXX 0px is falsy...
+      buf += (i ? delim : '') + s
+    else //XXX if this isn't here and the last s is false, buf gets dropped
+      buf
+
+// This mixin provides basic support for CSS3 properties and
+// their corresponding experimental CSS2 properties when
+// the implementations are identical except for the property
+// prefix.
+experimental($property, $value,
+  $moz      = $experimental-support-for-mozilla,
+  $webkit   = $experimental-support-for-webkit,
+  $o        = $experimental-support-for-opera,
+  $ms       = $experimental-support-for-microsoft,
+  $khtml    = $experimental-support-for-khtml,
+  $official = true
+) {
+  //$value = unquote($value) if typeof($value) == 'string'
+  if $moz     and $experimental-support-for-mozilla   {    -moz-{$property} : $value; }
+  if $webkit  and $experimental-support-for-webkit    { -webkit-{$property} : $value; }
+  if $o       and $experimental-support-for-opera     {      -o-{$property} : $value; }
+  if $ms      and $experimental-support-for-microsoft {     -ms-{$property} : $value; }
+  if $khtml   and $experimental-support-for-khtml     {  -khtml-{$property} : $value; }
+  if $official                                        {         {$property} : $value; }
+}
+
+// Same as experimental(), but for cases when the property is the same and the
+// value is vendorized
+// XXX interpolation doesn't work on RHS?
+
+experimental-value($property, $value,
+  $moz      = $experimental-support-for-mozilla,
+  $webkit   = $experimental-support-for-webkit,
+  $o        = $experimental-support-for-opera,
+  $ms       = $experimental-support-for-microsoft,
+  $khtml    = $experimental-support-for-khtml,
+  $official = true
+) {
+  $value = unquote($value) if typeof($value) == 'string'
+  if $moz     and $experimental-support-for-mozilla   { {$property} : unquote('-moz-'+$value); }
+  if $webkit  and $experimental-support-for-webkit    { {$property} : unquote('-webkit-'+$value); }
+  if $o       and $experimental-support-for-opera     { {$property} : unquote('-o-'+$value); }
+  if $ms      and $experimental-support-for-microsoft { {$property} : unquote('-ms-'+$value); }
+  if $khtml   and $experimental-support-for-khtml     { {$property} : unquote('-khtml-'+$value); }
+  if $official                                        { {$property} : $value; }
+}

@@ -1,0 +1,11 @@
+@import "shared"
+
+// Change the appearance for Mozilla, Webkit and the future
+//
+// @param $ap
+//   [ none | normal | icon | window | button | menu | field ]
+appearance() {
+  experimental(appearance, arguments,
+    'moz', 'webkit', !'o', !'ms', !'khtml', 'official'
+  )
+}
