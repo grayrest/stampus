@@ -1,0 +1,59 @@
+@import "../support"
+
+border-table-inner(width = 0, style = solid, color = false)
+  if typeof(width) == 'color'
+    color = width
+    style = solid
+    width = 0
+  if typeof(width) == 'ident'
+    color = style
+    style = width
+    width = 0
+  th, td
+    border: unquote(join(' ', width, style, color))
+    border-left-width: 0
+    border-top-width: 0
+    &:last-child, &.last
+      border-right-width: 0
+    if $legacy-support-for-ie //IE8 :last-child bug
+      &.last
+        border-right-width: 0
+  tr:last-child, tr.last
+    th, td
+      border-bottom-width: 0
+  if $legacy-support-for-ie //IE8 :last-child bug
+    tr.last
+      th, td
+        border-bottom-width: 0
+
+border-table-outer(width = 0, style = solid, color = false)
+  if typeof(width) == 'color'
+    color = width
+    style = solid
+    width = 0
+  if typeof(width) == 'ident'
+    color = style
+    style = width
+    width = 0
+  border: width style color
+  thead
+    th
+      border-bottom: width style color
+  tfoot
+    th, td
+      border-top: width style color
+  th
+    &:first-child
+      border-right: width style color
+
+border-table(width = 0, style = solid, color = false)
+  if typeof(width) == 'color'
+    color = width
+    style = solid
+    width = 0
+  if typeof(width) == 'ident'
+    color = style
+    style = width
+    width = 0
+  border-table-inner: width color
+  border-table-outer: width color

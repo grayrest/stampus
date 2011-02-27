@@ -1,0 +1,19 @@
+// Options are [zoom, block]. Only reason to use block is if you want your CSS to validate
+$default-has-layout-approach = zoom
+has-layout(using = $default-has-layout-approach)
+  if $legacy-support-for-ie
+    if using
+      if using == block
+        // kicks ie6 into layout
+        display: inline-block
+        // puts it back to block
+        &
+          display: block
+      else
+        zoom: 1
+
+float()
+  if $legacy-support-for-ie6
+    //fixes the IE6 double float bug
+    display: inline
+  float: arguments

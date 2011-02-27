@@ -1,0 +1,59 @@
+//XXX I'll probably rework this if there is some way to get & into a value so I can test it
+//    alternatively, turning this into @reset would be neat
+full-reset()
+  isDefault = default in arguments || length(arguments) == 0
+  //XXX wrapping seletors fails
+  if isDefault || box-model in arguments
+    html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video
+      reset: box-model font
+  if isDefault || body in arguments
+    body
+      line-height: 1
+  if isDefault || list-style in arguments
+    ol, ul
+      list-style: none
+  if table in arguments
+    table
+      reset: table
+    th, td
+      reset: table-cell
+  if quotation in arguments
+    q, blockquote
+      quotes: none
+      reset: generated
+  if isDefault || image-border in arguments
+    a img
+      border: none
+  if isDefault || html5 in arguments
+    reset: html5
+
+reset()
+  box-model()
+    margin: 0
+    padding: 0
+    border: 0
+  font()
+    font-size: 100%
+    font: inherit
+    vertical-align: baseline
+  table()
+    border-collapse: collapse
+    border-spacing: 0
+  table-cell()
+      text-align: left
+      font-weight: normal
+      vertical-align: middle
+  generated()
+    &:before, &after
+      content: ""
+      content: none
+  html5()
+    article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section
+      display: block
+
+  for arg in arguments
+    if arg in (box-model font table quotation generated html5)
+      //XXX no way to do string->function, e.g. $reset-{arg}() or (unquote('$reset-'+arg))()
+      arg()
+    else
+      warn("Unknown value `"+arg+"` passed to reset")

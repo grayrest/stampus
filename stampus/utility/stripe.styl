@@ -1,0 +1,21 @@
+stripe(prop, vals...)
+  loopd = vals
+  if length(arguments) < 2
+    error("stripe needs a property and at least one value (stripe: background-color red), got: `"+arguments+"`")
+  if length(vals) == 2 && (odd in vals || even in vals)
+    // XXX yay conditional descendent bug AND interpolation not working
+    mix-odd(pr, v)
+      &.odd
+        {pr}: v
+    mix-even(pr, v)
+      &.even
+        {pr}: v
+    if odd in vals
+      mix-odd(prop, vals[0] == odd ? vals[1]: vals[0])
+    else if even in vals
+      mix-even(prop, vals[0] == odd ? vals[1]: vals[0])
+  for val,i in loopd
+    step = ''+length(loopd)+'n'+(i > 0 ? '+'+i : '')
+    //XXX doesn't work
+    //&:nth-child({step})
+    //  {prop}: val

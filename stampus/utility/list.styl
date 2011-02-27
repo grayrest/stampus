@@ -1,0 +1,68 @@
+@import "../support"
+@import "reset"
+
+list-delimit(sep = ', ')
+  reset: box-model
+  display: inline
+  list-style-type: none
+  li
+    display: inline
+    &:after
+      content: sep
+    &:last-child, &.last
+      content: ''
+    // IE8 (at least) drops all rules in a selector containing :last-child
+    if $legacy-support-for-ie
+      &:.last
+        &:after
+          content: ''
+
+$display-horizontal-list-container()
+  reset: box-model
+  clearfix: default
+
+
+// XXX descendant selectors in conditionals lose reference to variables @%#$%#
+//     rework the whole horizontal-list section when this gets fixed
+$display-horizontal-list-item(direction = left, padding = 4px)
+  internal-padding(direction, padding)
+    padding-left: padding
+    padding-right: padding
+    &:first-child, &.first
+      padding-{direction}: 0
+    &:last-child, &.last
+     //XXX this doesn't work for some reason
+     padding-{opposite-position(direction)}: 0
+    //if $legacy-support-for-ie //IE8 :last-child bug
+    //  &.last
+    //    padding-{opposite-position(direction)}: 0
+  if typeof(direction) == 'unit'
+    padding = direction
+    direction = left
+  white-space: nowrap
+  float: direction
+  if padding > 0
+    internal-padding(direction, padding)
+
+$display-horizontal-list(direction = left, padding = 4px)
+    $display-horizontal-list-container()
+    li
+      $display-horizontal-list-item(direction, padding)
+
+horizontal-list(kind=default, direction = left, padding = 4px)
+  pdq = direction
+  xyzzy = padding
+  if typeof(kind) == 'unit'
+    padding = kind
+    direction = left
+    kind = default
+  if kind == left || kind == right
+    padding = direction
+    direction = kind
+    kind = default
+  if kind == default || kind == true
+    $display-horizontal-list(direction, padding)
+  else if kind == container
+    $display-horizontal-list-container()
+  else if kind == item
+    $display-horizontal-list-item(direction, padding)

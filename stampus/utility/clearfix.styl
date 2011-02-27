@@ -1,0 +1,23 @@
+@import "../support"
+@import "hacks"
+
+// Options are [overflow, generated]. Overflow uses `overflow:hidden` techinque, generated
+// uses the position is everything generated element approach.
+$default-clearfix-approach = overflow
+clearfix(approach = $default-clearfix-approach)
+  if approach == true || approach == default
+    approach = $default-clearfix-approach
+  if approach == overflow
+    has-layout: true
+    overflow: hidden
+  else if approach = generated
+    has-layout: true
+    &:after
+      content: "\0020"
+      display: block
+      height: 0
+      clear: both
+      overflow: hidden
+      visibility: hidden
+  else
+    warn("Unknown value `"+approach+"` passed to clearfix. Use `overflow` or `generated`.")
